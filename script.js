@@ -108,6 +108,7 @@ if (true) {
   var winLength = 3;
   var circleRad = 20;
   var circlePad = 5;
+  var startPad = 5;
   var gameTable = [];
   var dropIndicator = document.getElementById("dropIndicator");
 
@@ -116,7 +117,6 @@ if (true) {
   }
   //Configure canvas size;
   var gameCanvas = document.getElementById("gameCanvas");
-  var startPad = 15;
   var canvasWidth;
   gameCanvas.width = canvasWidth;
   gameCanvas.height =
@@ -128,7 +128,7 @@ if (true) {
         circleRad +
         (boardColumns + 1) * circlePad) /
       2 -
-      startPad
+      startPad - 50
       }px`;
     rotateLeft.style.top = `${window.innerHeight / 2 -
       (circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad) /
@@ -140,7 +140,7 @@ if (true) {
         circleRad +
         (boardColumns + 1) * circlePad) /
       2 -
-      startPad
+      startPad + 50
       }px`;
     rotateRight.style.top = `${window.innerHeight / 2 -
       (circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad) /
@@ -232,8 +232,14 @@ if (true) {
     if (
       e.clientX - (window.innerWidth / 2 - gameCanvas.width / 2 + startPad) >
       0 &&
-      e.clientX - (window.innerWidth / 2 - gameCanvas.width / 2 + startPad) <
-      gameCanvas.width - (circleRad * 2 + circlePad)
+      (Math.round(
+        (e.clientX -
+          circleRad -
+          (window.innerWidth / 2 - gameCanvas.width / 2 + startPad)) /
+        (circleRad * 2 + circlePad)
+      ) *
+        (circleRad * 2 + circlePad)) /
+      (circleRad * 2 + circlePad) < boardColumns
     ) {
       selectedColumn =
         (Math.round(
@@ -557,9 +563,9 @@ if (true) {
     }
   };
   function updateSize() {
-    if (gameCanvas.getBoundingClientRect().width < window.innerWidth / 4) {
+    if (gameCanvas.getBoundingClientRect().width < window.innerWidth / 1.5) {
       while (
-        window.innerWidth / 4 >
+        window.innerWidth / 1.5 >
         circleRad * 2 * boardColumns +
         circleRad +
         (boardColumns + 1) * circlePad
@@ -580,21 +586,21 @@ if (true) {
         circleRad--;
       }
     }
-    // if (gameCanvas.getBoundingClientRect().height < window.innerHeight / 2) {
-    //   while (
-    //     window.innerHeight / 2 >
-    //     circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad
-    //   ) {
-    //     circleRad++;
-    //   }
-    // } else {
-    //   while (
-    //     circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad >
-    //     window.innerHeight / 2
-    //   ) {
-    //     circleRad--;
-    //   }
-    // }
+    if (gameCanvas.getBoundingClientRect().height < window.innerHeight / 2) {
+      while (
+        window.innerHeight / 2 >
+        circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad
+      ) {
+        circleRad++;
+      }
+    } else {
+      while (
+        circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad >
+        window.innerHeight / 2
+      ) {
+        circleRad--;
+      }
+    }
 
     setShield();
   }
@@ -606,7 +612,7 @@ function collapseArray(a) {
     return x
   }))
 }
-
+updateSize();
 function checkFutureWin(board) {
   var foundWin;
   board.forEach(function (column, ci) {
