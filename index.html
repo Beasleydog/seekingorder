@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/script.js" defer></script>
+    <script src="/fireworks.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+</head>
+
+<body>
+    <div id="instructions">
+        <div id="instructionClose">
+            x
+        </div>
+        <img id="instructionImage" src="https://i.imgur.com/KsUchZD.png"></img>
+        <div id="clickAdvance">Click to advance</div>
+    </div>
+    <div id="introCont">
+        <canvas id="introBack"></canvas>
+
+        <img src="https://i.imgur.com/gGJeW3u.png" id="title">
+        </img>
+        <div id="options">
+            <div id="play" class="options">
+                PLAY
+            </div>
+            <div id="instructionButton" class="options">
+                INSTRUCTIONS
+            </div>
+            <div id="credits" class="options">
+                CREDITS
+            </div>
+
+        </div>
+    </div>
+    <div id="gameCont">
+        <div id="dropIndicator">
+
+        </div>
+        <div id="shieldDisplay">
+
+        </div>
+        <div id="redScoreDisplay">
+            <div id="redScoreText">
+                0
+            </div>
+            <div id="redLivesText">
+                🖤🖤
+            </div>
+        </div>
+        <div id="yellowScoreDisplay">
+            <div id="yellowScoreText">
+                0
+            </div>
+            <div id="yellowLivesText">
+                🖤🖤
+            </div>
+        </div>
+        <div id="rowShow">⚪⚪⚪</div>
+        <div id="rotateLeft">
+            ↶
+        </div>
+        <div id="rotateRight">
+            ↷
+        </div>
+        <canvas id="gameCanvas">
+
+        </canvas>
+        <canvas id="gameBack">
+
+        </canvas>
+        <div id="cheatSheet"></div>
+        <div id="shieldButton"></div>
+        <div id="doneMove">DONE MOVE</div>
+        <div id="screenWipe">
+            <div id="winTitle">
+                Round Over
+            </div>
+            <div id="wipeInfo">
+                <div id="plusPoints">
+                    +3 Points
+                </div>
+                <div id="nextUp">
+                    Next Up: 4 In A Row
+                </div>
+            </div>
+            <img id="prevBoard">
+
+            </img>
+            <canvas id="fireworkCanvas"></canvas>
+        </div>
+        <div id="winScreen">
+            <div id="gameTitle">
+                Game Over
+            </div>
+            <div id="celebratory">Great job!</div>
+            <div id="showWinner">
+            </div>
+            <div id="scoreRecap">
+            </div>
+            <div id="gamesRecap"></div>
+        </div>
+    </div>
+</body>
+
+</html>
