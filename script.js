@@ -1,3 +1,5 @@
+console.log("639");
+
 var redColor = "#af2e33";
 var yellowColor = "#e9b872";
 var redScore = 0;
