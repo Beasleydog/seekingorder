@@ -563,9 +563,9 @@ if (true) {
     }
   };
   function updateSize() {
-    if (gameCanvas.getBoundingClientRect().width < window.innerWidth / 1.5) {
+    if (gameCanvas.getBoundingClientRect().width < window.innerWidth / 3) {
       while (
-        window.innerWidth / 1.5 >
+        window.innerWidth / 3 >
         circleRad * 2 * boardColumns +
         circleRad +
         (boardColumns + 1) * circlePad
@@ -581,14 +581,14 @@ if (true) {
         circleRad * 2 * boardColumns +
         circleRad +
         (boardColumns + 1) * circlePad >
-        window.innerWidth / 4
+        window.innerWidth / 3
       ) {
         circleRad--;
       }
     }
-    if (gameCanvas.getBoundingClientRect().height < window.innerHeight / 2) {
+    if (gameCanvas.getBoundingClientRect().height < window.innerHeight / 3) {
       while (
-        window.innerHeight / 2 >
+        window.innerHeight / 3 >
         circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad
       ) {
         circleRad++;
@@ -596,7 +596,7 @@ if (true) {
     } else {
       while (
         circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad >
-        window.innerHeight / 2
+        window.innerHeight / 3
       ) {
         circleRad--;
       }
