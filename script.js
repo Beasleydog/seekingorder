@@ -577,47 +577,51 @@ if (true) {
     }
   };
   function updateSize() {
-    if (gameCanvas.getBoundingClientRect().width < window.innerWidth / 3) {
-      while (
-        window.innerWidth / 3 >
-        circleRad * 2 * boardColumns +
-        circleRad +
-        (boardColumns + 1) * circlePad
-      ) {
-        if (circleRad < 25) {
-          circleRad++;
-        } else {
-          break;
+    if (boardColumns > boardRows) {
+      if (gameCanvas.getBoundingClientRect().width < window.innerWidth / 3) {
+        while (
+          window.innerWidth / 3 >
+          circleRad * 2 * boardColumns +
+          circleRad +
+          (boardColumns + 1) * circlePad
+        ) {
+          if (circleRad < 25) {
+            circleRad++;
+          } else {
+            break;
+          }
+        }
+      } else {
+        while (
+          circleRad * 2 * boardColumns +
+          circleRad +
+          (boardColumns + 1) * circlePad >
+          window.innerWidth / 3
+        ) {
+          circleRad--;
         }
       }
     } else {
-      while (
-        circleRad * 2 * boardColumns +
-        circleRad +
-        (boardColumns + 1) * circlePad >
-        window.innerWidth / 3
-      ) {
-        circleRad--;
+      if (gameCanvas.getBoundingClientRect().height < window.innerHeight / 2) {
+        while (
+          window.innerHeight / 2 >
+          circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad
+        ) {
+          circleRad++;
+        }
+      } else {
+        while (
+          circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad >
+          window.innerHeight / 2
+        ) {
+          circleRad--;
+        }
       }
+
     }
-    if (gameCanvas.getBoundingClientRect().height < window.innerHeight / 2.5) {
-      while (
-        window.innerHeight / 2.5 >
-        circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad
-      ) {
-        circleRad++;
-      }
-    } else {
-      while (
-        circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad >
-        window.innerHeight / 2.5
-      ) {
-        circleRad--;
-      }
-    }
-    drawBoard();
-    setShield();
   }
+  drawBoard();
+  setShield();
   updateSize();
   setRotateSymbols();
 }
