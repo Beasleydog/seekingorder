@@ -1,4 +1,5 @@
 var particles = [];
+var popSound = new Audio("https://raw.githubusercontent.com/Beasleydog/seekingorder/main/firework.mp3");
 var fireworkcolors = ["#e64a19", "#ffee58", "#43a047", "#2196f3"];
 function particle(x, y, xv, yv, r, p, color) {
   this.color = color || fireworkcolors[Math.floor(fireworkcolors.length * Math.random())];
@@ -81,6 +82,7 @@ setInterval(function tick() {
           delete lp;
         }
       }
+      new Audio("https://raw.githubusercontent.com/Beasleydog/seekingorder/main/firework.mp3").play();
       p.color = "transparent";
     }
     if (p.y > window.innerHeight) {
