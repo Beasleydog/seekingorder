@@ -1084,6 +1084,8 @@ async function wipe(color) {
         locked = false;
         prevFlash = undefined;
         console.log("ya");
+        shieldButton.style.opacity = "1";
+        shieldButton.style.cursor = "pointer";
         setRotateSymbols();
       }, 50);
     }, 500);
