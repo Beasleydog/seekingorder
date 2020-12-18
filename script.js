@@ -162,6 +162,7 @@ if (true) {
     drawBoard();
   }
   window.onresize = function () {
+    updateSize();
     setRotateSymbols();
     setTimeout(function () {
       setRotateSymbols();
@@ -1035,6 +1036,7 @@ function tieScreen() {
   }, 500);
 }
 var wipeShowTime = 6000;
+var roundOverSound = new Audio("https://raw.githubusercontent.com/Beasleydog/seekingorder/main/roundOver.mp3");
 function flashPrev(prev, current) {
   return new Promise((resolve, reject) => {
     setTimeout(function () {
@@ -1066,13 +1068,13 @@ async function wipe(color) {
   screenWipe.style.left = "0%";
   setTimeout(function () {
     spawnFireworks(10);
+    roundOverSound.play();
   }, 500);
   setTimeout(function () {
     screenWipe.style.left = "100%";
     setTimeout(function () {
       screenWipe.style.transition = "left 0s";
       screenWipe.style.left = "-100%";
-
       setTimeout(function () {
         fireworkCanvas.style.display = "none";
         clearFctx();
@@ -1082,6 +1084,7 @@ async function wipe(color) {
         locked = false;
         prevFlash = undefined;
         console.log("ya");
+        setRotateSymbols();
       }, 50);
     }, 500);
   }, wipeShowTime);
