@@ -114,7 +114,7 @@ if (true) {
   var winLength = 3;
   var circleRad = 20;
   var circlePad = 5;
-  var startPad = 5;
+  var startPad = 15;
   var gameTable = [];
   var dropIndicator = document.getElementById("dropIndicator");
 
@@ -280,7 +280,7 @@ if (true) {
 
           return;
         }
-        shieldDisplay.style.top = `${gameCanvas.getBoundingClientRect().top +
+        shieldDisplay.style.top = `${gameCanvas.getBoundingClientRect().top + 2 +
           startPad +
           ((Math.round(
             (mouseMoveEvent.clientY -
@@ -291,14 +291,14 @@ if (true) {
             (circleRad * 2 + circlePad)) /
             (circleRad * 2 + circlePad)) * (circleRad * 2 + circlePad)
           + circleRad}px`;
-        shieldDisplay.style.left = `${gameCanvas.getBoundingClientRect().left +
+        shieldDisplay.style.left = `${gameCanvas.getBoundingClientRect().left + 2 +
           startPad +
           selectedColumn * (circleRad * 2 + circlePad)
-          + circleRad - shieldDisplay.getBoundingClientRect().width / 5}px`;
+          + circleRad}px`;
       } else {
         dropIndicator.style.left = `${gameCanvas.getBoundingClientRect().left +
           startPad +
-          selectedColumn * (circleRad * 2 + circlePad)
+          (selectedColumn * (circleRad * 2 + circlePad))
           }px`;
       }
       mouseMoveEvent = e;
@@ -607,7 +607,7 @@ if (true) {
         circleRad--;
       }
     }
-
+    drawBoard();
     setShield();
   }
   updateSize();
@@ -1014,7 +1014,7 @@ function tieScreen() {
     rowShow.innerText = "";
     for (var i = 0; i < winLength; i++) {
       rowShow.innerText = rowShow.innerText + "⚪";
-    } 
+    }
     for (var i = 0; i < boardColumns; i++) {
       gameTable.push(Array.apply(null, Array(boardRows)));
     }
