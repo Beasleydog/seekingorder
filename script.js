@@ -13,6 +13,9 @@ var games = [];
 var instructionUrls = ["https://i.imgur.com/cnAdUAK.png", "https://i.imgur.com/qrbnhfh.png", "https://i.imgur.com/8ynpgFh.png", "https://i.imgur.com/GQUm7Q2.png", "https://i.imgur.com/2RbmjuW.png", "https://i.imgur.com/U9NSMaz.png", "https://i.imgur.com/2jibueY.png", "https://i.imgur.com/O3hHkpp.png"];
 var currentInstruction = 0;
 fireworkCanvas.style.display = "none";
+var buttonSound = new Audio("https://raw.githubusercontent.com/Beasleydog/seekingorder/main/buttonPress.mp3");
+var clickSound = new Audio("https://raw.githubusercontent.com/Beasleydog/seekingorder/main/click.mp3");
+var turnSound = new Audio("https://raw.githubusercontent.com/Beasleydog/seekingorder/main/turn.mp3");
 var pieces = [];
 
 (function introBackground() {
@@ -101,6 +104,7 @@ instructionImage.onclick = function () {
   instructionImage.src = instructionUrls[currentInstruction % instructionUrls.length];
 }
 play.onclick = function () {
+  buttonSound.play();
   clearInterval(tick);
   introCont.style.display = "none";
   gameCont.style.display = "block";
@@ -327,6 +331,7 @@ if (true) {
       ] != undefined) { return }
       shieldDisplay.style.display = "none";
       placedShield = true;
+      clickSound.play();
       shieldButton.style.opacity = ".3";
       gameTable[
         (Math.round(
@@ -377,6 +382,7 @@ if (true) {
         if (gameTable[selectedColumn][0]) { return }
         locked = true;
         moved = true;
+        clickSound.play();
         doneMove.style.opacity = "1";
         shieldButton.style.opacity = ".3";
         shieldButton.style.cursor = "not-allowed";
@@ -414,6 +420,7 @@ if (true) {
     rotateBoard(1);
   };
   function rotateBoard(dir) {
+    turnSound.play();
     if (rotateRight.style.opacity != "1" || rotateLeft.style.opacity != "1") {
       return null;
     }
@@ -1220,6 +1227,8 @@ function setShield() {
 instructionButton.onclick = function () {
   instructions.style.opacity = "1";
   instructions.style.pointerEvents = "unset";
+  buttonSound.play();
+
 }
 instructionClose.onclick = function () {
   instructions.style.opacity = "0";
