@@ -847,7 +847,11 @@ function flashColor(spots, color) {
     }, flashDelay);
   });
 }
+var winAudio = new Audio("https://raw.githubusercontent.com/Beasleydog/seekingorder/main/win.mp3");
 async function gameOver(color) {
+  setTimeout(function () {
+    winAudio.play();
+  }, 6500);
   pieces = [];
   introBack.style.opacity = ".15";
   confirmedColor = (color == "r" ? redColor : yellowColor);
