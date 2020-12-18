@@ -1,5 +1,3 @@
-console.log("714");
-
 var redColor = "#af2e33";
 var yellowColor = "#e9b872";
 var redScore = 0;
@@ -12,8 +10,11 @@ var tick;
 var introTick;
 var confirmedColor;
 var games = [];
+var instructionUrls = ["https://i.imgur.com/cnAdUAK.png", "https://i.imgur.com/qrbnhfh.png", "https://i.imgur.com/8ynpgFh.png", "https://i.imgur.com/GQUm7Q2.png", "https://i.imgur.com/2RbmjuW.png", "https://i.imgur.com/U9NSMaz.png", "https://i.imgur.com/2jibueY.png", "https://i.imgur.com/O3hHkpp.png"];
+var currentInstruction = 0;
 fireworkCanvas.style.display = "none";
 var pieces = [];
+
 (function introBackground() {
   introBack.width = window.innerWidth;
   introBack.height = window.innerHeight;
@@ -95,7 +96,10 @@ var pieces = [];
   }
   tick = setInterval(introTick, 10);
 })();
-
+instructionImage.onclick = function () {
+  currentInstruction++;
+  instructionImage.src = instructionUrls[currentInstruction % instructionUrls.length];
+}
 play.onclick = function () {
   clearInterval(tick);
   introCont.style.display = "none";
@@ -794,6 +798,8 @@ function checkWin(board) {
       }
     });
   });
+  locked = false;
+
   if (redWon && yellowWon) {
     tieScreen();
   } else if (redWon) {
@@ -801,8 +807,7 @@ function checkWin(board) {
   } else if (yellowWon) {
     won("y", ycheckedSpots);
   }
-  locked = false;
-  console.log("unlocked");
+  console.log("unlocked from win check");
   var tie = true;
   board.forEach(function (x) {
     if (x.indexOf(undefined) != -1) {
@@ -913,12 +918,13 @@ async function won(color, spots) {
   } else {
     nextUp.innerText = "Next up: " + (winLength + 1) + " In A Row";
   }
-  moved = false;
 
   //Flash winning connection
+  locked = true;
   for (var i = 0; i < 5; i++) {
     await flashColor(spots, color);
   }
+  moved = false;
 
   //Handle lives
   if (redStreakLost == 2) {
@@ -949,40 +955,40 @@ async function won(color, spots) {
 
     }
   }
+  // setTimeout(function () {
+  wipe(color);
   setTimeout(function () {
-    wipe(color);
-    setTimeout(function () {
-      if (redScore >= 20) {
-        //red won
-        gameOver("r");
-      } else if (yellowScore >= 20) {
-        //yellow won
-        gameOver("y");
-      }
-      if (winLength == 5) {
-        winLength = 3;
-        gameTable = [];
-        boardColumns -= 2;
-        boardRows -= 2;
-      } else {
-        winLength++;
-        gameTable = [];
-        boardColumns++;
-        boardRows++;
-      }
-      rowShow.innerText = "";
-      for (var i = 0; i < winLength; i++) {
-        rowShow.innerText = rowShow.innerText + "⚪";
-      }
-      for (var i = 0; i < boardColumns; i++) {
-        gameTable.push(Array.apply(null, Array(boardRows)));
-      }
-      locked = false;
-      drawBoard();
-      updateSize();
-      setRotateSymbols();
-    }, 500);
-  }, 200);
+    if (redScore >= 20) {
+      //red won
+      gameOver("r");
+    } else if (yellowScore >= 20) {
+      //yellow won
+      gameOver("y");
+    }
+    if (winLength == 5) {
+      winLength = 3;
+      gameTable = [];
+      boardColumns -= 2;
+      boardRows -= 2;
+    } else {
+      winLength++;
+      gameTable = [];
+      boardColumns++;
+      boardRows++;
+    }
+    rowShow.innerText = "";
+    for (var i = 0; i < winLength; i++) {
+      rowShow.innerText = rowShow.innerText + "⚪";
+    }
+    for (var i = 0; i < boardColumns; i++) {
+      gameTable.push(Array.apply(null, Array(boardRows)));
+    }
+    locked = false;
+    drawBoard();
+    updateSize();
+    setRotateSymbols();
+  }, 500);
+  // }, 200);
 }
 function tieScreen() {
   plusPoints.innerHTML = "Tie<br>No points given";
@@ -1082,7 +1088,7 @@ async function wipe(color) {
   }
 
 }
-setTimeout(flash, 60000);
+setTimeout(flash, 10000);
 function flash() {
   gameBack.style.filter = "brightness(2)";
   setTimeout(function () {
