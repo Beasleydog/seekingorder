@@ -1,4 +1,4 @@
-console.log("639");
+console.log("714");
 
 var redColor = "#af2e33";
 var yellowColor = "#e9b872";
@@ -588,9 +588,9 @@ if (true) {
         circleRad--;
       }
     }
-    if (gameCanvas.getBoundingClientRect().height < window.innerHeight / 3) {
+    if (gameCanvas.getBoundingClientRect().height < window.innerHeight / 2.5) {
       while (
-        window.innerHeight / 3 >
+        window.innerHeight / 2.5 >
         circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad
       ) {
         circleRad++;
@@ -598,7 +598,7 @@ if (true) {
     } else {
       while (
         circleRad * 2 * boardRows + circleRad + (boardRows + 1) * circlePad >
-        window.innerHeight / 3
+        window.innerHeight / 2.5
       ) {
         circleRad--;
       }
@@ -615,329 +615,192 @@ function collapseArray(a) {
   }))
 }
 updateSize();
-function checkFutureWin(board) {
-  var foundWin;
-  board.forEach(function (column, ci) {
-    //Loop through each column
-    column.forEach(function (hole, hi) {
-      if (foundWin) { return }
-      //Up and down check
-      var win = true;
-      var checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci, hi - i]);
-          if (!column[hi - i] || column[hi - i].t != redColor) {
-            win = false;
-          }
-        } catch { }
-      }
-      if (win) {
-        foundWin = "r";
-        return "r";
-      }
-
-      // Left and right check
-      win = true;
-      checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi]);
-          if (
-            !board[ci + i] ||
-            !board[ci + i][hi] ||
-            board[ci + i][hi].t != redColor
-          ) {
-            win = false;
-          }
-        } catch { }
-      }
-      if (win) {
-        foundWin = "r";
-        return "r";
-      }
-      // Left to right, down to up diagonal
-      checkedSpots = [];
-      win = true;
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi - i]);
-          if (!board[ci + i][hi - i] || board[ci + i][hi - i].t != redColor) {
-            win = false;
-          }
-        } catch {
-          win = false;
-        }
-      }
-      if (win) {
-        foundWin = "r";
-        return "r";
-      }
-
-      // Left to right, up to down diagonal
-      checkedSpots = [];
-      win = true;
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi + i]);
-          if (!board[ci + i][hi + i] || board[ci + i][hi + i].t != redColor) {
-            win = false;
-          }
-        } catch {
-          win = false;
-        }
-      }
-      if (win) {
-        foundWin = "r";
-        return "r";
-      }
-
-      //YELLOW CHECK
-      var win = true;
-      checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci, hi - i]);
-          if (!column[hi - i] || column[hi - i].t != yellowColor) {
-            win = false;
-          }
-        } catch { }
-      }
-      if (win) {
-        foundWin = "y";
-        return "y";
-      }
-
-      // Left and right check
-      checkedSpots = [];
-      win = true;
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi]);
-          if (
-            !board[ci + i] ||
-            !board[ci + i][hi] ||
-            board[ci + i][hi].t != yellowColor
-          ) {
-            win = false;
-          }
-        } catch { }
-      }
-      if (win) {
-        foundWin = "y";
-        return "y";
-      }
-      // Left to right, down to up diagonal
-      win = true;
-      checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi - i]);
-          if (
-            !board[ci + i][hi - i] ||
-            board[ci + i][hi - i].t != yellowColor
-          ) {
-            win = false;
-          }
-        } catch {
-          win = false;
-        }
-      }
-      if (win) {
-        foundWin = "y";
-        return "y";
-      }
-
-      // Left to right, up to down diagonal
-      win = true;
-      checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi + i]);
-          if (
-            !board[ci + i][hi + i] ||
-            board[ci + i][hi + i].t != yellowColor
-          ) {
-            win = false;
-          }
-        } catch {
-          win = false;
-        }
-      }
-      if (win) {
-        foundWin = "y";
-        return "y";
-      }
-    });
-  });
-  if (foundWin) {
-    return foundWin
-  }
-}
-
 
 var locked = false;
 function checkWin(board) {
+  var redWon = false;
+  var yellowWon = false;
+  var win = true;
+  var rcheckedSpots = [];
+  var ycheckedSpots = [];
   board.forEach(function (column, ci) {
     //Loop through each column
     column.forEach(function (hole, hi) {
       //Up and down check
-      var win = true;
-      var checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci, hi - i]);
-          if (!column[hi - i] || column[hi - i].t != redColor) {
-            win = false;
-          }
-        } catch { }
+      if (!redWon) {
+        win = true;
+        rcheckedSpots = [];
+        for (var i = 0; i < winLength; i++) {
+          try {
+            rcheckedSpots.push([ci, hi - i]);
+            if (!column[hi - i] || column[hi - i].t != redColor) {
+              win = false;
+            }
+          } catch { }
+        }
+        if (win) {
+          console.log("red");
+          redWon = true;
+          return;
+        }
       }
-      if (win) {
-        console.log("red");
-        won("r", checkedSpots);
-        return;
-      }
-
       // Left and right check
-      win = true;
-      checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi]);
-          if (
-            !board[ci + i] ||
-            !board[ci + i][hi] ||
-            board[ci + i][hi].t != redColor
-          ) {
-            win = false;
-          }
-        } catch { }
-      }
-      if (win) {
-        console.log("red");
-        won("r", checkedSpots);
-        return;
-      }
-      // Left to right, down to up diagonal
-      checkedSpots = [];
-      win = true;
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi - i]);
-          if (!board[ci + i][hi - i] || board[ci + i][hi - i].t != redColor) {
-            win = false;
-          }
-        } catch {
-          win = false;
+      if (!redWon) {
+        win = true;
+        rcheckedSpots = [];
+        for (var i = 0; i < winLength; i++) {
+          try {
+            rcheckedSpots.push([ci + i, hi]);
+            if (
+              !board[ci + i] ||
+              !board[ci + i][hi] ||
+              board[ci + i][hi].t != redColor
+            ) {
+              win = false;
+            }
+          } catch { }
+        }
+        if (win) {
+          redWon = true;
+          console.log("red");
+          return;
         }
       }
-      if (win) {
-        console.log("red");
-        won("r", checkedSpots);
-        return;
-      }
-
-      // Left to right, up to down diagonal
-      checkedSpots = [];
-      win = true;
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi + i]);
-          if (!board[ci + i][hi + i] || board[ci + i][hi + i].t != redColor) {
+      if (!redWon) {
+        // Left to right, down to up diagonal
+        rcheckedSpots = [];
+        win = true;
+        for (var i = 0; i < winLength; i++) {
+          try {
+            rcheckedSpots.push([ci + i, hi - i]);
+            if (!board[ci + i][hi - i] || board[ci + i][hi - i].t != redColor) {
+              win = false;
+            }
+          } catch {
             win = false;
           }
-        } catch {
-          win = false;
+        }
+        if (win) {
+          console.log("red");
+          redWon = true;
+          return;
         }
       }
-      if (win) {
-        console.log("red");
-        won("r", checkedSpots);
-        return;
+      if (!redWon) {
+        // Left to right, up to down diagonal
+        rcheckedSpots = [];
+        win = true;
+        for (var i = 0; i < winLength; i++) {
+          try {
+            rcheckedSpots.push([ci + i, hi + i]);
+            if (!board[ci + i][hi + i] || board[ci + i][hi + i].t != redColor) {
+              win = false;
+            }
+          } catch {
+            win = false;
+          }
+        }
+        if (win) {
+          console.log("red");
+          redWon = true;
+          return;
+        }
       }
-
       //YELLOW CHECK
-      var win = true;
-      checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci, hi - i]);
-          if (!column[hi - i] || column[hi - i].t != yellowColor) {
-            win = false;
-          }
-        } catch { }
-      }
-      if (win) {
-        console.log("yellow");
-        won("y", checkedSpots);
-        return;
-      }
-
-      // Left and right check
-      checkedSpots = [];
-      win = true;
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi]);
-          if (
-            !board[ci + i] ||
-            !board[ci + i][hi] ||
-            board[ci + i][hi].t != yellowColor
-          ) {
-            win = false;
-          }
-        } catch { }
-      }
-      if (win) {
-        console.log("yellow");
-        won("y", checkedSpots);
-        return;
-      }
-      // Left to right, down to up diagonal
-      win = true;
-      checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi - i]);
-          if (
-            !board[ci + i][hi - i] ||
-            board[ci + i][hi - i].t != yellowColor
-          ) {
-            win = false;
-          }
-        } catch {
-          win = false;
+      if (!yellowWon) {
+        var win = true;
+        ycheckedSpots = [];
+        for (var i = 0; i < winLength; i++) {
+          try {
+            ycheckedSpots.push([ci, hi - i]);
+            if (!column[hi - i] || column[hi - i].t != yellowColor) {
+              win = false;
+            }
+          } catch { }
+        }
+        if (win) {
+          console.log("yellow");
+          yellowWon = true;
+          return;
         }
       }
-      if (win) {
-        console.log("yellow");
-        won("y", checkedSpots);
-        return;
-      }
-
-      // Left to right, up to down diagonal
-      win = true;
-      checkedSpots = [];
-      for (var i = 0; i < winLength; i++) {
-        try {
-          checkedSpots.push([ci + i, hi + i]);
-          if (
-            !board[ci + i][hi + i] ||
-            board[ci + i][hi + i].t != yellowColor
-          ) {
-            win = false;
-          }
-        } catch {
-          win = false;
+      if (!yellowWon) {
+        // Left and right check
+        ycheckedSpots = [];
+        win = true;
+        for (var i = 0; i < winLength; i++) {
+          try {
+            ycheckedSpots.push([ci + i, hi]);
+            if (
+              !board[ci + i] ||
+              !board[ci + i][hi] ||
+              board[ci + i][hi].t != yellowColor
+            ) {
+              win = false;
+            }
+          } catch { }
+        }
+        if (win) {
+          console.log("yellow");
+          yellowWon = true;
+          return;
         }
       }
-      if (win) {
-        console.log("yellow");
-        won("y", checkedSpots);
-        return;
+      if (!yellowWon) {
+        // Left to right, down to up diagonal
+        win = true;
+        ycheckedSpots = [];
+        for (var i = 0; i < winLength; i++) {
+          try {
+            ycheckedSpots.push([ci + i, hi - i]);
+            if (
+              !board[ci + i][hi - i] ||
+              board[ci + i][hi - i].t != yellowColor
+            ) {
+              win = false;
+            }
+          } catch {
+            win = false;
+          }
+        }
+        if (win) {
+          console.log("yellow");
+          yellowWon = true;
+          return;
+        }
+      }
+      if (!yellowWon) {
+        // Left to right, up to down diagonal
+        win = true;
+        ycheckedSpots = [];
+        for (var i = 0; i < winLength; i++) {
+          try {
+            ycheckedSpots.push([ci + i, hi + i]);
+            if (
+              !board[ci + i][hi + i] ||
+              board[ci + i][hi + i].t != yellowColor
+            ) {
+              win = false;
+            }
+          } catch {
+            win = false;
+          }
+        }
+        if (win) {
+          console.log("yellow");
+          yellowWon = true;
+          return;
+        }
       }
     });
   });
+  if (redWon && yellowWon) {
+    tieScreen();
+  } else if (redWon) {
+    won("r", rcheckedSpots);
+  } else if (yellowWon) {
+    won("y", ycheckedSpots);
+  }
   locked = false;
   console.log("unlocked");
   var tie = true;
@@ -1122,8 +985,7 @@ async function won(color, spots) {
   }, 200);
 }
 function tieScreen() {
-  winTitle.innerText = "Tie";
-  plusPoints.innerText = "No points given";
+  plusPoints.innerHTML = "Tie<br>No points given";
   if (winLength == 5) {
     nextUp.innerText = "Next up: " + "3" + " in a row";
   } else {
@@ -1207,13 +1069,16 @@ async function wipe(color) {
   var oldRad = circleRad;
   circleRad = 5;
   drawBoard();
-  console.log(circleRad, oldRad);
   games.push([gameCanvas.toDataURL(), color]);
   circleRad = oldRad;
   drawBoard();
   var currentBoard = gameCanvas.toDataURL();
-  for (var i = 0; i < 10; i++) {
-    await flashPrev(prevFlash, currentBoard);
+  if (color != "t") {
+    for (var i = 0; i < 10; i++) {
+      await flashPrev(prevFlash, currentBoard);
+    }
+  } else {
+    prevBoard.src = currentBoard;
   }
 
 }
