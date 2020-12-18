@@ -99,7 +99,7 @@ var pieces = [];
   }
   tick = setInterval(introTick, 10);
 })();
-instructionImage.onclick = function () {
+instructions.onclick = function () {
   currentInstruction++;
   instructionImage.src = instructionUrls[currentInstruction % instructionUrls.length];
 }
