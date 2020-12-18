@@ -529,6 +529,7 @@ html {
   width: 100vw;
   overflow-x: auto;
   text-align: center;
+  z-index: 10;
 }
 .gameImages {
   background: #6494aa;
