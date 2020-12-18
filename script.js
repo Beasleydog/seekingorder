@@ -99,6 +99,11 @@ var pieces = [];
   }
   tick = setInterval(introTick, 10);
 })();
+quit.onclick = function () {
+  quitCont.style.display = "block";
+  gameCont.style.display = "none";
+  introCont.style.display = "none";
+}
 instructions.onclick = function () {
   currentInstruction++;
   instructionImage.src = instructionUrls[currentInstruction % instructionUrls.length];
@@ -1071,7 +1076,9 @@ async function wipe(color) {
   }
   screenWipe.style.left = "0%";
   setTimeout(function () {
-    spawnFireworks(10);
+    if (color != "t") {
+      spawnFireworks(10);
+    }
     roundOverSound.play();
   }, 500);
   setTimeout(function () {
@@ -1112,6 +1119,7 @@ async function wipe(color) {
 
 }
 clearBoard.onclick = function () {
+  if (locked) { return }
   gameTable = [];
   for (var i = 0; i < boardColumns; i++) {
     gameTable.push(Array.apply(null, Array(boardRows)));
@@ -1229,8 +1237,12 @@ function flash() {
   setInterval(introTick, 10);
 })();
 
-document.onkeydown = function () {
-  doneMove.click();
+document.onkeydown = function (e) {
+  if (e.key == "Escape") {
+    quit.click();
+  } else if (e.key == " ") {
+    doneMove.click();
+  }
 };
 updateSize();
 setRotateSymbols();
