@@ -855,7 +855,7 @@ async function gameOver(color) {
     var img = new Image();
     img.src = x[0];
     img.draggable = false;
-    img.style.border = `${x[1] == "r" ? redColor : yellowColor} solid 5px`;
+    img.style.border = `${x[1] == "r" ? redColor : x[1] == "y" ? yellowColor : "#c4c4c7"} solid 5px`;
     img.classList.add("gameImages");
     gamesRecap.appendChild(img);
   })
@@ -1011,7 +1011,10 @@ function tieScreen() {
       boardColumns++;
       boardRows++;
     }
-
+    rowShow.innerText = "";
+    for (var i = 0; i < winLength; i++) {
+      rowShow.innerText = rowShow.innerText + "⚪";
+    } 
     for (var i = 0; i < boardColumns; i++) {
       gameTable.push(Array.apply(null, Array(boardRows)));
     }
